@@ -1,7 +1,7 @@
 use crate::models;
 use crate::pool::DbPool;
 use crate::user::actions;
-use actix_web::{delete, get, post, put, web, Error, HttpRequest, HttpResponse, Responder};
+use actix_web::{delete, get, post, web, Error, HttpRequest, HttpResponse, Responder};
 use futures::future::{ready, Ready};
 use uuid::Uuid;
 
