@@ -59,14 +59,15 @@ async fn show_user(
 }
 
 #[post("/")]
-pub async fn add_user(
+pub async fn upsert(
   pool: web::Data<DbPool>,
   form: web::Json<models::NewUser>,
 ) -> Result<HttpResponse, Error> {
   let conn = pool.get().expect("couldn't get db connection from pool");
 
-  let user = web::block(move || {
-    actions::insert_new_user(&form.first_name, &form.last_name, &form.email, &conn)
+  let user = web::block(move || match form.id {
+    None => actions::insert_user(&form.first_name, &form.last_name, &form.email, &conn),
+    Some(id) => actions::update_user(&id, &form.first_name, &form.last_name, &form.email, &conn),
   })
   .await
   .map_err(|e| {
@@ -77,20 +78,8 @@ pub async fn add_user(
   Ok(HttpResponse::Ok().json(user))
 }
 
-// #[put("/")]
-// pub async fn update() -> impl Responder {
-//   println!("add new user");
-//   User {
-//     id: 12,
-//     first_name: String::from("Jean"),
-//     last_name: String::from("Valjean"),
-//     email: String::from("j.m@laposte.net"),
-//     pin_code: 12,
-//   }
-// }
-
 #[delete("/{user_id}")]
-pub async fn delete(
+pub async fn delete_user(
   pool: web::Data<DbPool>,
   user_uid: web::Path<Uuid>,
 ) -> Result<HttpResponse, Error> {

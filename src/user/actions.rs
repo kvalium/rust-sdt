@@ -24,7 +24,7 @@ pub fn delete_user(uid: Uuid, conn: &PgConnection) -> Result<usize, diesel::resu
 }
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert_new_user(
+pub fn insert_user(
   // prevent collision with `name` column imported inside the function
   firstn: &str,
   lastn: &str,
@@ -41,4 +41,23 @@ pub fn insert_new_user(
   diesel::insert_into(users).values(&new_user).execute(conn)?;
 
   Ok(new_user)
+}
+
+/// Run query using Diesel to insert a new database row and return the result.
+pub fn update_user(
+  uid: &Uuid,
+  firstn: &str,
+  lastn: &str,
+  mail: &str,
+  conn: &PgConnection,
+) -> Result<models::User, diesel::result::Error> {
+  let updated_row = diesel::update(users.filter(id.eq(uid)))
+    .set((
+      first_name.eq(firstn.to_owned()),
+      last_name.eq(lastn.to_owned()),
+      email.eq(mail.to_owned()),
+    ))
+    .get_result(conn)?;
+
+  Ok(updated_row)
 }
