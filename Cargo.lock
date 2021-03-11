@@ -1342,7 +1342,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_sky_dev_team"
+name = "rust-sdt"
 version = "0.1.0"
 dependencies = [
  "actix-web",

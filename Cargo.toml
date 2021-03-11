@@ -1,5 +1,5 @@
 [package]
-name = "rust_sky_dev_team"
+name = "rust-sdt"
 version = "0.1.0"
 authors = ["Julien Monchany <j.monchany@adsoftware.fr>"]
 edition = "2018"
