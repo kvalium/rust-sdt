@@ -5,7 +5,7 @@ CREATE TABLE users (
   first_name varchar NOT NULL,
   last_name varchar NOT NULL,
   email varchar NOT NULL,
-  -- pin_code smallint NOT NULL,
+  pin_code smallint NOT NULL,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
