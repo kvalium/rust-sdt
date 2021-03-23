@@ -21,7 +21,7 @@ impl Responder for models::User {
   }
 }
 
-#[get("/show")]
+#[get("")]
 pub async fn show_users(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
   println!("show all users");
   let conn = pool.get().expect("couldn't get db connection from pool");
@@ -35,7 +35,7 @@ pub async fn show_users(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> 
   Ok(HttpResponse::Ok().json(users))
 }
 
-#[get("/show/{user_id}")]
+#[get("/{user_id}")]
 async fn show_user(
   pool: web::Data<DbPool>,
   user_uid: web::Path<Uuid>,
@@ -58,16 +58,15 @@ async fn show_user(
   }
 }
 
-#[post("/")]
+#[post("")]
 pub async fn upsert(
   pool: web::Data<DbPool>,
-  form: web::Json<models::NewUser>,
+  form: web::Json<models::UserForm>,
 ) -> Result<HttpResponse, Error> {
   let conn = pool.get().expect("couldn't get db connection from pool");
-
   let user = web::block(move || match form.id {
-    None => actions::insert_user(&form.first_name, &form.last_name, &form.email, &conn),
-    Some(id) => actions::update_user(&id, &form.first_name, &form.last_name, &form.email, &conn),
+    None => actions::insert_user(&form, &conn),
+    Some(id) => actions::update_user(&id, &form, &conn),
   })
   .await
   .map_err(|e| {

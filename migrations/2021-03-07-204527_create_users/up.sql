@@ -6,8 +6,11 @@ CREATE TABLE users (
   last_name varchar NOT NULL,
   email varchar NOT NULL,
   -- pin_code smallint NOT NULL,
-  -- created_at timestamptz DEFAULT NOW() NOT NULL,
-  -- deleted_at timestamptz,
+  created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 );
+
+SELECT
+  diesel_manage_updated_at ('users');
 

@@ -1,3 +1,5 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+
 #[macro_use]
 extern crate diesel;
 
@@ -31,7 +33,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .data(pool.clone())
             .wrap(middleware::Logger::default())
-            .service(web::scope("/user").configure(user::controller::config))
+            .service(web::scope("/users").configure(user::controller::config))
     })
     .bind(&bind)?
     .run()
