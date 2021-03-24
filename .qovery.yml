@@ -1,0 +1,15 @@
+---
+application:
+  name: "rust-sdt"
+  project: "rust-sdt"
+  organization: "QoveryCommunity"
+databases:
+- type: "POSTGRESQL"
+  name: "sdt"
+  version: "11"
+routers:
+- name: "main-rust-sdt"
+  routes:
+  - application_name: "rust-sdt"
+    paths:
+    - "/*"
