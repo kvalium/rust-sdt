@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate diesel;
 
+use actix_cors::Cors;
+
 use actix_web::{middleware, web, App, HttpServer};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
@@ -28,9 +30,12 @@ async fn main() -> std::io::Result<()> {
     println!("Starting server at: {}", &bind);
 
     HttpServer::new(move || {
+        let cors = Cors::permissive();
+
         App::new()
             .data(pool.clone())
             .wrap(middleware::Logger::default())
+            .wrap(cors)
             .service(web::scope("/users").configure(user::controller::config))
     })
     .bind(&bind)?
