@@ -2,6 +2,7 @@
 FROM rust:latest as cargo-build
 
 RUN apt-get update && apt-get install musl-tools -y
+RUN apt-get install libpq-dev
 RUN rustup target add x86_64-unknown-linux-musl
 
 WORKDIR /usr/src/app
